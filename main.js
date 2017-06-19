@@ -1,7 +1,7 @@
 var products = [
-  {name: 'Tee', images: 'product-images/Tee.jpg'},
-  {name: 'Hoodie', images: 'product-images/hoodie2.jpg'},
-  {name: 'Hat', images: 'product-images/hat2.jpg'},
+  {name: 'Tee', images: 'product-images/tee.jpg'},
+  {name: 'Hoodie', images: 'product-images/hoodie.jpg'},
+  {name: 'Hat', images: 'product-images/hat.jpg'},
   {name: 'Sticker', images: 'product-images/sticker.jpg'}
 ]
 
