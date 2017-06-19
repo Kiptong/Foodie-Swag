@@ -1,29 +1,31 @@
 var products = [
-  {name: 'Tee', images: 'product-images/tee.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL']},
-  {name: 'Hoodie', images: 'product-images/hoodie.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL']},
-  {name: 'Hat', images: 'product-images/hat.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['Black/White'], size: ['One Size Fits All']},
-  {name: 'Sticker', images: 'product-images/sticker.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['N/A'], size: ['S', 'M', 'L']}
+  {id: 'tee', name: 'Tee', images: 'product-images/tee.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL']},
+  {id: 'hoodie', name: 'Hoodie', images: 'product-images/hoodie.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL']},
+  {id: 'hat', name: 'Hat', images: 'product-images/hat.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['Black/White'], size: ['One Size Fits All']},
+  {id: 'sticker', name: 'Sticker', images: 'product-images/sticker.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['N/A'], size: ['S', 'M', 'L']}
 ]
 
-// function createProduct(product) {
-//   var $product = document.createElement('div')
-//   var $images = document.createElement('img')
-//   var $name = document.createElement('h3')
-//   $images.setAttribute('src', product.images)
-//   $images.setAttribute('class', 'img-responsive')
-//   $product.setAttribute('class', 'col-xs-3')
-//   $name.setAttribute('class', 'text-center')
-//   $name.textContent = product.name
-//   $product.appendChild($images)
-//   $product.appendChild($name)
-//
-//   return $product
-// }
-//
-// var $products = document.getElementById('products')
-// for (var b = 0; b < products.length; b++) {
-//   $products.appendChild(createProduct(products[b]))
-// }
+function createProduct(product) {
+  var $product = document.createElement('div')
+  var $images = document.createElement('img')
+  var $name = document.createElement('h3')
+  $images.setAttribute('src', product.images)
+  $images.setAttribute('class', 'img-responsive')
+  $product.setAttribute('class', 'col-xs-3')
+  $images.setAttribute('id', product.id)
+  $name.setAttribute('class', 'text-center')
+  $name.textContent = product.name
+  $product.appendChild($images)
+  $product.appendChild($name)
+
+  return $product
+}
+
+var $products = document.getElementById('products')
+for (var b = 0; b < products.length; b++) {
+  $products.appendChild(createProduct(products[b]))
+}
+
 function productView(product) {
 
   var $row = document.createElement('div')
@@ -68,8 +70,8 @@ function productView(product) {
   var $descripTitle = document.createElement('h4')
   $descripTitle.textContent = 'Description'
   var $descripList = document.createElement('ul')
-  for (var x = 0; x < product.description.length; x++) {
-    var bullet = product.description[x]
+  for (var c = 0; c < product.description.length; c++) {
+    var bullet = product.description[c]
     var $bullet = document.createElement('li')
     $bullet.textContent = bullet
     $descripList.appendChild($bullet)
@@ -107,8 +109,8 @@ function productView(product) {
   $sizeButton.appendChild($sizeButtonSpan)
 
   var $sizeDropMenu = document.createElement('ul')
-  for (var c = 0; c < product.size.length; c++) {
-    var sizeOption = product.size[c]
+  for (var x = 0; x < product.size.length; x++) {
+    var sizeOption = product.size[x]
     var $sizeLi = document.createElement('li')
     var $sizeOption = document.createElement('a')
     $sizeOption.setAttribute('href', '#')
@@ -139,8 +141,8 @@ function productView(product) {
   $colorButton.appendChild($colorButtonSpan)
 
   var $colorDropMenu = document.createElement('ul')
-  for (var z = 0; z < product.color.length; z++) {
-    var colorOption = product.color[z]
+  for (var y = 0; y < product.color.length; y++) {
+    var colorOption = product.color[y]
     var $colorLi = document.createElement('li')
     var $colorOption = document.createElement('a')
     $colorOption.setAttribute('href', '#')
@@ -186,7 +188,26 @@ function productView(product) {
   return $row
 }
 
-var $productView = document.getElementById('product-detail')
-for (var y = 0; y < products.length; y++) {
-  $productView.appendChild(productView(products[y]))
+function selectProduct(event) {
+  var $productView = document.getElementById('product-detail')
+  $productView.removeAttribute('class', 'hidden')
+  $products.setAttribute('class', 'hidden')
+  for (var z = 0; z < products.length; z++) {
+    if (products[z].id === event.target.id) {
+      $productView.appendChild(productView(products[z]))
+      return
+    }
+  }
 }
+
+var tee = document.getElementById('tee')
+tee.addEventListener('click', selectProduct)
+
+var hoodie = document.getElementById('hoodie')
+hoodie.addEventListener('click', selectProduct)
+
+var hat = document.getElementById('hat')
+hat.addEventListener('click', selectProduct)
+
+var sticker = document.getElementById('sticker')
+sticker.addEventListener('click', selectProduct)
