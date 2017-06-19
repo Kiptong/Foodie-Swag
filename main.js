@@ -22,8 +22,8 @@ function createProduct(product) {
 }
 
 var $products = document.getElementById('products')
-for (var i = 0; i < products.length; i++) {
-  $products.appendChild(createProduct(products[i]))
+for (var b = 0; b < products.length; b++) {
+  $products.appendChild(createProduct(products[b]))
 }
 
 function productView(product) {
@@ -70,8 +70,8 @@ function productView(product) {
   var $descripTitle = document.createElement('h4')
   $descripTitle.textContent = 'Description'
   var $descripList = document.createElement('ul')
-  for (var i = 0; i < product.description.length; i++) {
-    var bullet = product.description[i]
+  for (var c = 0; c < product.description.length; c++) {
+    var bullet = product.description[c]
     var $bullet = document.createElement('li')
     $bullet.textContent = bullet
     $descripList.appendChild($bullet)
@@ -109,8 +109,8 @@ function productView(product) {
   $sizeButton.appendChild($sizeButtonSpan)
 
   var $sizeDropMenu = document.createElement('ul')
-  for (var i = 0; i < product.size.length; i++) {
-    var sizeOption = product.size[i]
+  for (var x = 0; x < product.size.length; x++) {
+    var sizeOption = product.size[x]
     var $sizeLi = document.createElement('li')
     var $sizeOption = document.createElement('a')
     $sizeOption.setAttribute('href', '#')
@@ -141,8 +141,8 @@ function productView(product) {
   $colorButton.appendChild($colorButtonSpan)
 
   var $colorDropMenu = document.createElement('ul')
-  for (var i = 0; i < product.color.length; i++) {
-    var colorOption = product.color[i]
+  for (var y = 0; y < product.color.length; y++) {
+    var colorOption = product.color[y]
     var $colorLi = document.createElement('li')
     var $colorOption = document.createElement('a')
     $colorOption.setAttribute('href', '#')
@@ -192,9 +192,9 @@ function selectProduct(event) {
   var $productView = document.getElementById('product-detail')
   $productView.removeAttribute('class', 'hidden')
   $products.setAttribute('class', 'hidden')
-  for (var i = 0; i < products.length; i++) {
-    if (products[i].id === event.target.id) {
-      $productView.appendChild(productView(products[i]))
+  for (var z = 0; z < products.length; z++) {
+    if (products[z].id === event.target.id) {
+      $productView.appendChild(productView(products[z]))
       return
     }
   }
