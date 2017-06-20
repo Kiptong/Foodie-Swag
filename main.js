@@ -109,12 +109,12 @@ function productView(product) {
   for (var y = 0; y < product.color.length; y++) {
     var colorOption = product.color[y]
     var $colorOption = document.createElement('option')
+    $colorOption.setAttribute('value', y)
     $colorOption.textContent = colorOption
     $colorSelect.appendChild($colorOption)
   }
 
-  $colorSelect.setAttribute('class', 'form-control')
-  $colorSelect.setAttribute('class', 'col-xs-6')
+  $colorSelect.setAttribute('class', 'col-xs-6 custom-select')
 
   $panelBodyRow.appendChild($colorSelect)
 
