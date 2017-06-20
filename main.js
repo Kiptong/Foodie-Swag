@@ -5,6 +5,9 @@ var products = [
   {id: 'sticker', name: 'Sticker', images: 'product-images/sticker.jpg', description: ['Made in US', 'Decal is great for Walls, Doors, Cars, Windows, Desks, ETC', 'Sticker is Vinyl and can withstand outdoor weather', 'Strong Adhesive'], price: '$19.99', color: ['N/A'], size: ['S', 'M', 'L']}
 ]
 
+var cart = [
+]
+
 function createProduct(product) {
   var $product = document.createElement('div')
   var $images = document.createElement('img')
@@ -42,6 +45,7 @@ function productView(product) {
 
   var $productName = document.createElement('h2')
   $productName.setAttribute('class', 'text-center')
+  $productName.setAttribute('id', 'productName')
   $productName.textContent = product.name
 
   $row.appendChild($panel)
@@ -61,6 +65,7 @@ function productView(product) {
 
   var $image = document.createElement('img')
   $image.setAttribute('class', 'thumbnail img-responsive')
+  $image.setAttribute('id', 'productImage')
   $image.setAttribute('src', product.images)
   $imgDiv.appendChild($image)
   $panelBodyRow.appendChild($imgDiv)
@@ -86,11 +91,18 @@ function productView(product) {
   var $priceDiv = document.createElement('div')
   $priceDiv.setAttribute('class', 'col-xs-6')
   var $price = document.createElement('h3')
+  $price.setAttribute('id', 'productPrice')
   $price.textContent = 'Price: ' + product.price
   var $priceHr = document.createElement('hr')
   $priceDiv.appendChild($price)
   $priceDiv.appendChild($priceHr)
   $panelBodyRow.appendChild($priceDiv)
+
+  var $sizeDiv = document.createElement('div')
+  $sizeDiv.setAttribute('class', 'col-xs-6')
+
+  var $sizeFormGroup = document.createElement('div')
+  $sizeFormGroup.setAttribute('class', 'form-group')
 
   var $sizeSelect = document.createElement('select')
   for (var x = 0; x < product.size.length; x++) {
@@ -101,22 +113,30 @@ function productView(product) {
   }
 
   $sizeSelect.setAttribute('class', 'form-control')
-  $sizeSelect.setAttribute('class', 'col-xs-6')
 
-  $panelBodyRow.appendChild($sizeSelect)
+  $sizeFormGroup.appendChild($sizeSelect)
+  $sizeDiv.appendChild($sizeFormGroup)
+  $panelBodyRow.appendChild($sizeDiv)
+
+  var $colorDiv = document.createElement('div')
+  $colorDiv.setAttribute('class', 'col-xs-6')
+
+  var $colorFormGroup = document.createElement('div')
+  $colorFormGroup.setAttribute('class', 'form-group')
 
   var $colorSelect = document.createElement('select')
   for (var y = 0; y < product.color.length; y++) {
     var colorOption = product.color[y]
     var $colorOption = document.createElement('option')
-    $colorOption.setAttribute('value', y)
     $colorOption.textContent = colorOption
     $colorSelect.appendChild($colorOption)
   }
 
-  $colorSelect.setAttribute('class', 'col-xs-6 custom-select')
+  $colorSelect.setAttribute('class', 'form-control')
 
-  $panelBodyRow.appendChild($colorSelect)
+  $colorFormGroup.appendChild($colorSelect)
+  $colorDiv.appendChild($colorFormGroup)
+  $panelBodyRow.appendChild($colorDiv)
 
   var $addCartDiv = document.createElement('div')
   $addCartDiv.setAttribute('class', 'col-xs-6')
@@ -127,6 +147,7 @@ function productView(product) {
   var $addCartButton = document.createElement('button')
   $addCartButton.setAttribute('class', 'btn btn-primary btn-lg btn-block')
   $addCartButton.setAttribute('type', 'button')
+  $addCartButton.setAttribute('id', product.id)
   $addCartButton.textContent = 'Add to Cart'
 
   $addCartDiv.appendChild($addCartButton)
@@ -147,19 +168,24 @@ function productView(product) {
   $btpFooterRow.appendChild($btpButtonDiv)
   $panelBody.appendChild($btpFooterRow)
 
+  $addCartButton.addEventListener('click', addToCart)
+  $btpButton.addEventListener('click', btpFunc)
+
   return $row
+}
+
+function btpFunc(event) {
+  var $productView = document.getElementById('product-detail')
+  $productView.innerHTML = ''
+  $products.removeAttribute('class', 'hidden')
 }
 
 function selectProduct(event) {
   var $productView = document.getElementById('product-detail')
   $productView.removeAttribute('class', 'hidden')
   $products.setAttribute('class', 'hidden')
-  for (var z = 0; z < products.length; z++) {
-    if (products[z].id === event.target.id) {
-      $productView.appendChild(productView(products[z]))
-      return
-    }
-  }
+  var product = findItem(event.target.id, products)
+  $productView.appendChild(productView(product))
 }
 
 var tee = document.getElementById('tee')
@@ -173,3 +199,16 @@ hat.addEventListener('click', selectProduct)
 
 var sticker = document.getElementById('sticker')
 sticker.addEventListener('click', selectProduct)
+
+function addToCart(event) {
+  var item = findItem(event.target.id, products)
+  cart.push(item)
+}
+
+function findItem(id, allItems) {
+  for (var i = 0; i < allItems.length; i++) {
+    if (allItems[i].id === id) {
+      return allItems[i]
+    }
+  }
+}
