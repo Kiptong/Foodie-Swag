@@ -1,8 +1,8 @@
 var products = [
-  {id: 'tee', name: 'Tee', images: 'product-images/tee.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL']},
-  {id: 'hoodie', name: 'Hoodie', images: 'product-images/hoodie.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL']},
-  {id: 'hat', name: 'Hat', images: 'product-images/hat.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['Black/White'], size: ['One Size Fits All']},
-  {id: 'sticker', name: 'Sticker', images: 'product-images/sticker.jpg', description: ['100% Cotton', 'dasijfaiojdf', 'afdijafjda', 'doasdkfaa'], price: '$19.99', color: ['N/A'], size: ['S', 'M', 'L']}
+  {id: 'tee', name: 'Tee', images: 'product-images/tee.jpg', description: ['100% Cotton', 'Made in US', 'Durable rib neckband', 'Made of 3 unique yarns'], price: '$19.99', color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL']},
+  {id: 'hoodie', name: 'Hoodie', images: 'product-images/hoodie.jpg', description: ['100% Cotton', 'Made in US', 'Hooded with matching finished polyester draw cord', 'Kangaroo pocket'], price: '$19.99', color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL']},
+  {id: 'hat', name: 'Hat', images: 'product-images/hat.jpg', description: ['Made in US', 'Poly-foam Front Two-toned Cap', 'Mesh Back Trucker Cap', 'Plastic Adjustable Snap Closure'], price: '$19.99', color: ['Black/White'], size: ['One Size Fits All']},
+  {id: 'sticker', name: 'Sticker', images: 'product-images/sticker.jpg', description: ['Made in US', 'Decal is great for Walls, Doors, Cars, Windows, Desks, ETC', 'Sticker is Vinyl and can withstand outdoor weather', 'Strong Adhesive'], price: '$19.99', color: ['N/A'], size: ['S', 'M', 'L']}
 ]
 
 function createProduct(product) {
@@ -92,75 +92,37 @@ function productView(product) {
   $priceDiv.appendChild($priceHr)
   $panelBodyRow.appendChild($priceDiv)
 
-  var $sizeButtonDiv = document.createElement('div')
-  $sizeButtonDiv.setAttribute('class', 'col-xs-6 dropdown')
-
-  var $sizeButton = document.createElement('button')
-  $sizeButton.setAttribute('class', 'btn btn-default btn-block dropdown-toggle')
-  $sizeButton.setAttribute('type', 'button')
-  $sizeButton.setAttribute('id', 'size')
-  $sizeButton.setAttribute('data-toggle', 'dropdown')
-  $sizeButton.setAttribute('aria-haspopup', 'true')
-  $sizeButton.setAttribute('aria-expanded', 'true')
-  $sizeButton.textContent = 'Size'
-
-  var $sizeButtonSpan = document.createElement('span')
-  $sizeButtonSpan.setAttribute('class', 'caret')
-  $sizeButton.appendChild($sizeButtonSpan)
-
-  var $sizeDropMenu = document.createElement('ul')
+  var $sizeSelect = document.createElement('select')
   for (var x = 0; x < product.size.length; x++) {
     var sizeOption = product.size[x]
-    var $sizeLi = document.createElement('li')
-    var $sizeOption = document.createElement('a')
-    $sizeOption.setAttribute('href', '#')
+    var $sizeOption = document.createElement('option')
     $sizeOption.textContent = sizeOption
-    $sizeLi.appendChild($sizeOption)
-    $sizeDropMenu.appendChild($sizeOption)
+    $sizeSelect.appendChild($sizeOption)
   }
-  $sizeDropMenu.setAttribute('class', 'dropdown-menu')
-  $sizeDropMenu.setAttribute('aria-labelledby', 'dropdownMenu1')
-  $sizeButtonDiv.appendChild($sizeButton)
-  $sizeButtonDiv.appendChild($sizeDropMenu)
-  $panelBodyRow.appendChild($sizeButtonDiv)
 
-  var $colorButtonDiv = document.createElement('div')
-  $colorButtonDiv.setAttribute('class', 'col-xs-6 dropdown')
+  $sizeSelect.setAttribute('class', 'form-control')
+  $sizeSelect.setAttribute('class', 'col-xs-6')
 
-  var $colorButton = document.createElement('button')
-  $colorButton.setAttribute('class', 'btn btn-default btn-block dropdown-toggle')
-  $colorButton.setAttribute('type', 'button')
-  $colorButton.setAttribute('id', 'color')
-  $colorButton.setAttribute('data-toggle', 'dropdown')
-  $colorButton.setAttribute('aria-haspopup', 'true')
-  $colorButton.setAttribute('aria-expanded', 'true')
-  $colorButton.textContent = 'Color'
+  $panelBodyRow.appendChild($sizeSelect)
 
-  var $colorButtonSpan = document.createElement('span')
-  $colorButtonSpan.setAttribute('class', 'caret')
-  $colorButton.appendChild($colorButtonSpan)
-
-  var $colorDropMenu = document.createElement('ul')
+  var $colorSelect = document.createElement('select')
   for (var y = 0; y < product.color.length; y++) {
     var colorOption = product.color[y]
-    var $colorLi = document.createElement('li')
-    var $colorOption = document.createElement('a')
-    $colorOption.setAttribute('href', '#')
+    var $colorOption = document.createElement('option')
     $colorOption.textContent = colorOption
-    $colorLi.appendChild($colorOption)
-    $colorDropMenu.appendChild($colorOption)
+    $colorSelect.appendChild($colorOption)
   }
-  $colorDropMenu.setAttribute('class', 'dropdown-menu')
-  $colorDropMenu.setAttribute('aria-labelledby', 'dropdownMenu1')
-  $colorButtonDiv.appendChild($colorButton)
-  $colorButtonDiv.appendChild($colorDropMenu)
-  $panelBodyRow.appendChild($colorButtonDiv)
 
-  var $colorButtonHr = document.createElement('hr')
-  $colorButtonDiv.appendChild($colorButtonHr)
+  $colorSelect.setAttribute('class', 'form-control')
+  $colorSelect.setAttribute('class', 'col-xs-6')
+
+  $panelBodyRow.appendChild($colorSelect)
 
   var $addCartDiv = document.createElement('div')
   $addCartDiv.setAttribute('class', 'col-xs-6')
+
+  var $colorButtonHr = document.createElement('hr')
+  $addCartDiv.appendChild($colorButtonHr)
 
   var $addCartButton = document.createElement('button')
   $addCartButton.setAttribute('class', 'btn btn-primary btn-lg btn-block')
