@@ -174,10 +174,18 @@ function productView(product) {
   return $row
 }
 
+var $viewProducts = document.getElementById('view-products')
+$viewProducts.addEventListener('click', backToProducts)
+
+var $viewCart = document.getElementById('view-cart')
+$viewCart.addEventListener('click', viewCart)
+
 function backToProducts(event) {
   var $productView = document.getElementById('product-detail')
+  var $viewProductsNav = document.getElementById('view-products')
   $productView.innerHTML = ''
   $products.removeAttribute('class', 'hidden')
+  $viewProductsNav.setAttribute('class', 'active')
 }
 
 function selectProduct(event) {
@@ -211,4 +219,150 @@ function findItem(id, allItems) {
       return allItems[i]
     }
   }
+}
+
+function viewCart(cart) {
+  // nav bar settings
+  var $viewCartNav = document.getElementById('view-cart')
+  var $viewProductsNav = document.getElementById('view-products')
+  $viewCartNav.setAttribute('class', 'active')
+  $viewProductsNav.removeAttribute('class', 'active')
+
+  // show Cart
+  var $viewCart = document.getElementById('cart')
+  var $productView = document.getElementById('product-detail')
+  var $products = document.getElementById('products')
+  $productView.setAttribute('class', 'hidden')
+  $productView.innerHTML = ''
+  $products.innerHTML = ''
+
+  // panel
+  var $panelDiv = document.createElement('div')
+  $panelDiv.setAttribute('class', 'panel panel-defualt')
+
+  // panel body
+  var $panelBody = document.createElement('div')
+  $panelBody.setAttribute('class', 'panel-body')
+
+  // panel header
+  var $panelHeader = document.createElement('div')
+  $panelHeader.setAttribute('class', 'panel-heading')
+
+  // Cart title
+  var $cartTitle = document.createElement('h2')
+  $cartTitle.textContent = 'Shopping Cart'
+  $cartTitle.setAttribute('class', 'panel text-center')
+  $panelHeader.appendChild($cartTitle)
+
+  // Cart Item Row
+  var $cartItemRow = document.createElement('div')
+  $cartItemRow.setAttribute('class', 'row')
+
+  // Cart Img div
+  var $cartImgDiv = document.createElement('div')
+  $cartImgDiv.setAttribute('class', 'col-xs-2')
+
+  // Cart Img
+  var $cartImg = document.createElement('img')
+  $cartImg.setAttribute('class', 'img-responsive')
+  $cartImg.setAttribute('src', 'product-images/tee.jpg')
+  $cartImgDiv.appendChild($cartImg)
+
+  // Append Img to Row
+  $cartItemRow.appendChild($cartImgDiv)
+
+  // Cart Item Title Div
+  var $cartItemTitleDiv = document.createElement('div')
+  $cartItemTitleDiv.setAttribute('class', 'col-xs-4')
+
+  // Cart Item title
+  var $cartItemTitle = document.createElement('h4')
+  $cartItemTitle.setAttribute('class', 'product-name')
+  var $cartItemPrimary = document.createElement('strong')
+  $cartItemPrimary.textContent = 'Tee'
+  $cartItemTitle.appendChild($cartItemPrimary)
+  $cartItemTitleDiv.appendChild($cartItemTitle)
+
+  // Append Title to Row
+  $cartItemRow.appendChild($cartItemTitleDiv)
+
+  // Cart Item Price divs
+  var $cartItemPriceDiv = document.createElement('div')
+  $cartItemPriceDiv.setAttribute('class', 'col-xs-6')
+  var $cartItemPriceTextRight = document.createElement('div')
+  $cartItemPriceTextRight.setAttribute('class', 'col-xs-6 text-right')
+
+  // Cart Item Price
+  var $cartItemPrice = document.createElement('h6')
+  var $cartItemPricePrimary = document.createElement('strong')
+  $cartItemPricePrimary.textContent = '19.99'
+  var $cartItemPriceSpan = document.createElement('span')
+  $cartItemPriceSpan.setAttribute('class', 'text-muted')
+  $cartItemPriceSpan.textContent = ' x'
+  $cartItemPricePrimary.appendChild($cartItemPriceSpan)
+  $cartItemPrice.appendChild($cartItemPricePrimary)
+  $cartItemPriceTextRight.appendChild($cartItemPrice)
+
+  // input for multiples of item div
+  var $numberOfItemsDiv = document.createElement('div')
+  $numberOfItemsDiv.setAttribute('class', 'col-xs-4')
+
+  var $numberOfItems = document.createElement('input')
+  $numberOfItems.setAttribute('type', 'text')
+  $numberOfItems.setAttribute('class', 'form-control input-sm')
+  $numberOfItems.setAttribute('value', '1')
+  $numberOfItemsDiv.appendChild($numberOfItems)
+
+  // checkbox to delete items div
+  var $itemCheckboxDiv = document.createElement('div')
+  $itemCheckboxDiv.setAttribute('class', 'col-xs-2')
+  var $itemCheckbox = document.createElement('input')
+  $itemCheckbox.setAttribute('type', 'checkbox')
+  $itemCheckbox.setAttribute('class', 'btn')
+  $itemCheckboxDiv.appendChild($itemCheckbox)
+
+  // Update Cart Button Row
+  var $updateCartButtonRow = document.createElement('div')
+  $updateCartButtonRow.setAttribute('class', 'row')
+
+  // Update Cart Button div
+  var $updateCartButtonDiv = document.createElement('div')
+  $updateCartButtonDiv.setAttribute('class', 'text-center')
+
+  // Update Cart Button
+  var $updateCartDiv = document.createElement('div')
+  $updateCartDiv.setAttribute('class', 'col-xs-9')
+
+  // Need to Update?
+  var $updateCart = document.createElement('h6')
+  $updateCart.textContent = 'Do you need to update the cart?'
+  $updateCart.setAttribute('class', 'text-right')
+  $updateCartDiv.appendChild($updateCart)
+  $updateCartButtonDiv.appendChild($updateCartDiv)
+
+  // Update Cart Button Actual
+  var $clickToUpdate = document.createElement('div')
+  $clickToUpdate.setAttribute('class', 'col-xs-3')
+  var $updateButton = document.createElement('button')
+  $updateButton.setAttribute('type', 'button')
+  $updateButton.setAttribute('class', 'btn btn-default btn-sm btn-block')
+  $updateButton.textContent = 'Click to Update'
+  $clickToUpdate.appendChild($updateButton)
+  $updateCartButtonDiv.appendChild($clickToUpdate)
+
+  // Append Update Button
+  $updateCartButtonRow.appendChild($updateCartButtonDiv)
+
+  $cartItemPriceDiv.appendChild($cartItemPriceTextRight)
+  $cartItemPriceDiv.appendChild($numberOfItemsDiv)
+  $cartItemPriceDiv.appendChild($itemCheckboxDiv)
+
+  $cartItemRow.appendChild($cartItemPriceDiv)
+  $panelBody.appendChild($cartItemRow)
+  $panelBody.appendChild($updateCartButtonRow)
+  $panelDiv.appendChild($panelHeader)
+  $panelDiv.appendChild($panelBody)
+  $viewCart.appendChild($panelDiv)
+
+  return $panelDiv
 }
