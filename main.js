@@ -169,12 +169,12 @@ function productView(product) {
   $panelBody.appendChild($btpFooterRow)
 
   $addCartButton.addEventListener('click', addToCart)
-  $btpButton.addEventListener('click', btpFunc)
+  $btpButton.addEventListener('click', backToProducts)
 
   return $row
 }
 
-function btpFunc(event) {
+function backToProducts(event) {
   var $productView = document.getElementById('product-detail')
   $productView.innerHTML = ''
   $products.removeAttribute('class', 'hidden')
