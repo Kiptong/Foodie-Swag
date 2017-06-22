@@ -177,21 +177,38 @@ function productView(product) {
 var $viewProducts = document.getElementById('view-products')
 $viewProducts.addEventListener('click', backToProducts)
 
-var $viewCart = document.getElementById('view-cart')
-$viewCart.addEventListener('click', viewCart)
+var $viewCartNav = document.getElementById('view-cart')
+$viewCartNav.addEventListener('click', viewCart)
+
+function viewCart(event) {
+  // nav bar settings
+  var $viewCartNav = document.getElementById('view-cart')
+  var $viewProductsNav = document.getElementById('view-products')
+  $viewCartNav.setAttribute('class', 'active')
+  $viewProductsNav.removeAttribute('class', 'active')
+
+  // show Cart
+  var $viewCart = document.getElementById('cart')
+  var $productView = document.getElementById('product-detail')
+  var $products = document.getElementById('products')
+  $products.setAttribute('class', 'hidden')
+  $productView.innerHTML = ''
+
+  $viewCart.appendChild(cartView(cart))
+}
 
 function backToProducts(event) {
   var $productView = document.getElementById('product-detail')
-  var $viewProductsNav = document.getElementById('view-products')
+  var $viewCart = document.getElementById('cart')
+  $viewCart.innerHTML = ''
   $productView.innerHTML = ''
   $products.removeAttribute('class', 'hidden')
-  $viewProductsNav.setAttribute('class', 'active')
 }
 
 function selectProduct(event) {
   var $productView = document.getElementById('product-detail')
-  $productView.removeAttribute('class', 'hidden')
   $products.setAttribute('class', 'hidden')
+
   var product = findItem(event.target.id, products)
   $productView.appendChild(productView(product))
 }
@@ -221,21 +238,7 @@ function findItem(id, allItems) {
   }
 }
 
-function viewCart(cart) {
-  // nav bar settings
-  var $viewCartNav = document.getElementById('view-cart')
-  var $viewProductsNav = document.getElementById('view-products')
-  $viewCartNav.setAttribute('class', 'active')
-  $viewProductsNav.removeAttribute('class', 'active')
-
-  // show Cart
-  var $viewCart = document.getElementById('cart')
-  var $productView = document.getElementById('product-detail')
-  var $products = document.getElementById('products')
-  $productView.setAttribute('class', 'hidden')
-  $productView.innerHTML = ''
-  $products.innerHTML = ''
-
+function cartView(event) {
   // panel
   var $panelDiv = document.createElement('div')
   $panelDiv.setAttribute('class', 'panel panel-defualt')
@@ -362,7 +365,6 @@ function viewCart(cart) {
   $panelBody.appendChild($updateCartButtonRow)
   $panelDiv.appendChild($panelHeader)
   $panelDiv.appendChild($panelBody)
-  $viewCart.appendChild($panelDiv)
 
   return $panelDiv
 }
