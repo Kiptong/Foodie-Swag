@@ -1,8 +1,8 @@
 var products = [
-  {id: 'tee', name: 'Tee', images: 'product-images/tee.jpg', description: ['100% Cotton', 'Made in US', 'Durable rib neckband', 'Made of 3 unique yarns'], price: '$19.99', color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL']},
-  {id: 'hoodie', name: 'Hoodie', images: 'product-images/hoodie.jpg', description: ['100% Cotton', 'Made in US', 'Hooded with matching finished polyester draw cord', 'Kangaroo pocket'], price: '$19.99', color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL']},
-  {id: 'hat', name: 'Hat', images: 'product-images/hat.jpg', description: ['Made in US', 'Poly-foam Front Two-toned Cap', 'Mesh Back Trucker Cap', 'Plastic Adjustable Snap Closure'], price: '$19.99', color: ['Black/White'], size: ['One Size Fits All']},
-  {id: 'sticker', name: 'Sticker', images: 'product-images/sticker.jpg', description: ['Made in US', 'Decal is great for Walls, Doors, Cars, Windows, Desks, ETC', 'Sticker is Vinyl and can withstand outdoor weather', 'Strong Adhesive'], price: '$19.99', color: ['N/A'], size: ['S', 'M', 'L']}
+  {id: 'tee', name: 'Tee', images: 'product-images/tee.jpg', description: ['100% Cotton', 'Made in US', 'Durable rib neckband', 'Made of 3 unique yarns'], price: 19.99, color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL'], qty: 0},
+  {id: 'hoodie', name: 'Hoodie', images: 'product-images/hoodie.jpg', description: ['100% Cotton', 'Made in US', 'Hooded with matching finished polyester draw cord', 'Kangaroo pocket'], price: 19.99, color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL'], qty: 0},
+  {id: 'hat', name: 'Hat', images: 'product-images/hat.jpg', description: ['Made in US', 'Poly-foam Front Two-toned Cap', 'Mesh Back Trucker Cap', 'Plastic Adjustable Snap Closure'], price: 19.99, color: ['Black/White'], size: ['One Size Fits All'], qty: 0},
+  {id: 'sticker', name: 'Sticker', images: 'product-images/sticker.jpg', description: ['Made in US', 'Decal is great for Walls, Doors, Cars, Windows, Desks, ETC', 'Sticker is Vinyl and can withstand outdoor weather', 'Strong Adhesive'], price: 19.99, color: ['N/A'], size: ['S', 'M', 'L'], qty: 0}
 ]
 
 var cart = [
@@ -31,9 +31,6 @@ for (var b = 0; b < products.length; b++) {
 
 function productView(product) {
 
-  var $row = document.createElement('div')
-  $row.setAttribute('class', 'row')
-
   var $panel = document.createElement('div')
   $panel.setAttribute('class', 'panel panel-default')
 
@@ -48,7 +45,6 @@ function productView(product) {
   $productName.setAttribute('id', 'productName')
   $productName.textContent = product.name
 
-  $row.appendChild($panel)
   $panel.appendChild($panelBody)
   $panelBody.appendChild($panelHeader)
   $panelHeader.appendChild($productName)
@@ -171,7 +167,7 @@ function productView(product) {
   $addCartButton.addEventListener('click', addToCart)
   $btpButton.addEventListener('click', backToProducts)
 
-  return $row
+  return $panel
 }
 
 var $viewProducts = document.getElementById('view-products')
@@ -179,23 +175,6 @@ $viewProducts.addEventListener('click', backToProducts)
 
 var $viewCartNav = document.getElementById('view-cart')
 $viewCartNav.addEventListener('click', viewCart)
-
-function viewCart(event) {
-  // nav bar settings
-  var $viewCartNav = document.getElementById('view-cart')
-  var $viewProductsNav = document.getElementById('view-products')
-  $viewCartNav.setAttribute('class', 'active')
-  $viewProductsNav.removeAttribute('class', 'active')
-
-  // show Cart
-  var $viewCart = document.getElementById('cart')
-  var $productView = document.getElementById('product-detail')
-  var $products = document.getElementById('products')
-  $products.setAttribute('class', 'hidden')
-  $productView.innerHTML = ''
-
-  $viewCart.appendChild(cartView(cart))
-}
 
 function backToProducts(event) {
   var $productView = document.getElementById('product-detail')
@@ -227,6 +206,13 @@ sticker.addEventListener('click', selectProduct)
 
 function addToCart(event) {
   var item = findItem(event.target.id, products)
+  for (var i = 0; i < cart.length; i++) {
+    if (cart[i].id === item.id) {
+      item.qty = item.qty + 1
+      return
+    }
+  }
+  item.qty = item.qty + 1
   cart.push(item)
 }
 
@@ -238,18 +224,26 @@ function findItem(id, allItems) {
   }
 }
 
-function cartView(event) {
-  // panel
+function viewCart(event) {
+  // nav bar settings
+  var $viewCartNav = document.getElementById('view-cart')
+  var $viewProductsNav = document.getElementById('view-products')
+  $viewCartNav.setAttribute('class', 'active')
+  $viewProductsNav.removeAttribute('class', 'active')
+
+  // show Cart
+  var $productView = document.getElementById('product-detail')
+  var $products = document.getElementById('products')
+  $products.setAttribute('class', 'hidden')
+  $productView.innerHTML = ''
+
   var $panelDiv = document.createElement('div')
   $panelDiv.setAttribute('class', 'panel panel-defualt')
-
-  // panel body
-  var $panelBody = document.createElement('div')
-  $panelBody.setAttribute('class', 'panel-body')
 
   // panel header
   var $panelHeader = document.createElement('div')
   $panelHeader.setAttribute('class', 'panel-heading')
+  $panelDiv.appendChild($panelHeader)
 
   // Cart title
   var $cartTitle = document.createElement('h2')
@@ -257,72 +251,20 @@ function cartView(event) {
   $cartTitle.setAttribute('class', 'panel text-center')
   $panelHeader.appendChild($cartTitle)
 
-  // Cart Item Row
-  var $cartItemRow = document.createElement('div')
-  $cartItemRow.setAttribute('class', 'row')
+  for (var i = 0; i < cart.length; i++) {
+    $panelDiv.appendChild(cartItem(findItem(cart[i].id, cart)))
+  }
+  // Footer append to panelDiv
+  var $footerDiv = document.createElement('div')
+  $footerDiv.setAttribute('class', 'panel-footer')
 
-  // Cart Img div
-  var $cartImgDiv = document.createElement('div')
-  $cartImgDiv.setAttribute('class', 'col-xs-2')
+  // FooterRow
+  var $footerRow = document.createElement('div')
+  $footerRow.setAttribute('class', 'row text-center')
 
-  // Cart Img
-  var $cartImg = document.createElement('img')
-  $cartImg.setAttribute('class', 'img-responsive')
-  $cartImg.setAttribute('src', 'product-images/tee.jpg')
-  $cartImgDiv.appendChild($cartImg)
-
-  // Append Img to Row
-  $cartItemRow.appendChild($cartImgDiv)
-
-  // Cart Item Title Div
-  var $cartItemTitleDiv = document.createElement('div')
-  $cartItemTitleDiv.setAttribute('class', 'col-xs-4')
-
-  // Cart Item title
-  var $cartItemTitle = document.createElement('h4')
-  $cartItemTitle.setAttribute('class', 'product-name')
-  var $cartItemPrimary = document.createElement('strong')
-  $cartItemPrimary.textContent = 'Tee'
-  $cartItemTitle.appendChild($cartItemPrimary)
-  $cartItemTitleDiv.appendChild($cartItemTitle)
-
-  // Append Title to Row
-  $cartItemRow.appendChild($cartItemTitleDiv)
-
-  // Cart Item Price divs
-  var $cartItemPriceDiv = document.createElement('div')
-  $cartItemPriceDiv.setAttribute('class', 'col-xs-6')
-  var $cartItemPriceTextRight = document.createElement('div')
-  $cartItemPriceTextRight.setAttribute('class', 'col-xs-6 text-right')
-
-  // Cart Item Price
-  var $cartItemPrice = document.createElement('h6')
-  var $cartItemPricePrimary = document.createElement('strong')
-  $cartItemPricePrimary.textContent = '19.99'
-  var $cartItemPriceSpan = document.createElement('span')
-  $cartItemPriceSpan.setAttribute('class', 'text-muted')
-  $cartItemPriceSpan.textContent = ' x'
-  $cartItemPricePrimary.appendChild($cartItemPriceSpan)
-  $cartItemPrice.appendChild($cartItemPricePrimary)
-  $cartItemPriceTextRight.appendChild($cartItemPrice)
-
-  // input for multiples of item div
-  var $numberOfItemsDiv = document.createElement('div')
-  $numberOfItemsDiv.setAttribute('class', 'col-xs-4')
-
-  var $numberOfItems = document.createElement('input')
-  $numberOfItems.setAttribute('type', 'text')
-  $numberOfItems.setAttribute('class', 'form-control input-sm')
-  $numberOfItems.setAttribute('value', '1')
-  $numberOfItemsDiv.appendChild($numberOfItems)
-
-  // checkbox to delete items div
-  var $itemCheckboxDiv = document.createElement('div')
-  $itemCheckboxDiv.setAttribute('class', 'col-xs-2')
-  var $itemCheckbox = document.createElement('input')
-  $itemCheckbox.setAttribute('type', 'checkbox')
-  $itemCheckbox.setAttribute('class', 'btn')
-  $itemCheckboxDiv.appendChild($itemCheckbox)
+  // FooterRow
+  var $footerPriceDiv = document.createElement('div')
+  $footerPriceDiv.setAttribute('class', 'col-xs-9')
 
   // Update Cart Button Row
   var $updateCartButtonRow = document.createElement('div')
@@ -356,15 +298,165 @@ function cartView(event) {
   // Append Update Button
   $updateCartButtonRow.appendChild($updateCartButtonDiv)
 
+  $footerRow.appendChild($updateCartButtonRow)
+  $updateButton.addEventListener('click', updateCart)
+
+  // FooterPrice
+  var $footerTotal = document.createElement('h4')
+  $footerTotal.textContent = 'Total: '
+  $footerTotal.setAttribute('class', 'text-right')
+  $footerTotal.setAttribute('id', 'total')
+
+  var $footerPrice = document.createElement('strong')
+  $footerPrice.textContent = '$' + totalCost(cart)
+  $footerTotal.appendChild($footerPrice)
+  $footerPriceDiv.appendChild($footerTotal)
+
+  $footerRow.appendChild($footerTotal)
+
+  // Checkout Button
+  var $checkoutButtonDiv = document.createElement('div')
+  $checkoutButtonDiv.setAttribute('class', 'pull-right col-xs-3')
+
+  // checkout button actual
+  var $checkoutButton = document.createElement('button')
+  $checkoutButton.setAttribute('type', 'button')
+  $checkoutButton.setAttribute('class', 'btn btn-success btn-block')
+  $checkoutButton.textContent = 'Purchase'
+
+  $checkoutButtonDiv.appendChild($checkoutButton)
+  $footerRow.appendChild($checkoutButtonDiv)
+  $footerDiv.appendChild($footerRow)
+  $panelDiv.appendChild($footerDiv)
+
+  var $cart = document.getElementById('cart')
+  $cart.appendChild($panelDiv)
+}
+
+function cartItem($cartItem) {
+  // panel
+  var $panelDiv = document.createElement('div')
+  $panelDiv.setAttribute('class', 'panel panel-defualt')
+
+  // panel body
+  var $panelBody = document.createElement('div')
+  $panelBody.setAttribute('class', 'panel-body')
+
+  // Cart Item Row
+  var $cartItemRow = document.createElement('div')
+  $cartItemRow.setAttribute('class', 'row')
+
+  // Cart Img div
+  var $cartImgDiv = document.createElement('div')
+  $cartImgDiv.setAttribute('class', 'col-xs-2')
+
+  // Cart Img
+  var $cartImg = document.createElement('img')
+  $cartImg.setAttribute('class', 'img-responsive')
+  $cartImg.setAttribute('src', $cartItem.images)
+  $cartImgDiv.appendChild($cartImg)
+
+  // Append Img to Row
+  $cartItemRow.appendChild($cartImgDiv)
+
+  // Cart Item Title Div
+  var $cartItemTitleDiv = document.createElement('div')
+  $cartItemTitleDiv.setAttribute('class', 'col-xs-4')
+
+  // Cart Item title
+  var $cartItemTitle = document.createElement('h4')
+  $cartItemTitle.setAttribute('class', 'product-name')
+  var $cartItemPrimary = document.createElement('strong')
+  $cartItemPrimary.textContent = $cartItem.name
+  $cartItemTitle.appendChild($cartItemPrimary)
+  $cartItemTitleDiv.appendChild($cartItemTitle)
+
+  // Append Title to Row
+  $cartItemRow.appendChild($cartItemTitleDiv)
+
+  // Cart Item Price divs
+  var $cartItemPriceDiv = document.createElement('div')
+  $cartItemPriceDiv.setAttribute('class', 'col-xs-6')
+  var $cartItemPriceTextRight = document.createElement('div')
+  $cartItemPriceTextRight.setAttribute('class', 'col-xs-6 text-right')
+
+  // Cart Item Price
+  var $cartItemPrice = document.createElement('h6')
+  var $cartItemPricePrimary = document.createElement('strong')
+  $cartItemPricePrimary.textContent = $cartItem.price
+  var $cartItemPriceSpan = document.createElement('span')
+  $cartItemPriceSpan.setAttribute('class', 'text-muted')
+  $cartItemPriceSpan.textContent = ' x'
+  $cartItemPricePrimary.appendChild($cartItemPriceSpan)
+  $cartItemPrice.appendChild($cartItemPricePrimary)
+  $cartItemPriceTextRight.appendChild($cartItemPrice)
+
+  // input for multiples of item div
+  var $numberOfItemsDiv = document.createElement('div')
+  $numberOfItemsDiv.setAttribute('class', 'col-xs-4')
+
+  var $numberOfItems = document.createElement('input')
+  $numberOfItems.setAttribute('type', 'text')
+  $numberOfItems.setAttribute('class', 'form-control input-sm')
+  $numberOfItems.setAttribute('value', $cartItem.qty)
+  $numberOfItemsDiv.appendChild($numberOfItems)
+
+  // checkbox to delete items div
+  var $itemCheckboxDiv = document.createElement('div')
+  $itemCheckboxDiv.setAttribute('class', 'col-xs-2')
+
+  var $itemCheckbox = document.createElement('button')
+  $itemCheckbox.setAttribute('type', 'button')
+  $itemCheckbox.setAttribute('class', 'btn btn-link btn-sm')
+  $itemCheckbox.setAttribute('class', 'cartItem')
+  $itemCheckbox.setAttribute('data-id', $cartItem.id)
+  $itemCheckbox.addEventListener('click', removeItem)
+
+  var $trashGlyphicon = document.createElement('span')
+  $trashGlyphicon.setAttribute('class', 'glyphicon glyphicon-trash')
+  $trashGlyphicon.setAttribute('data-id', $cartItem.id)
+  $trashGlyphicon.addEventListener('click', removeItem)
+  $itemCheckbox.appendChild($trashGlyphicon)
+
+  $itemCheckboxDiv.appendChild($itemCheckbox)
+
   $cartItemPriceDiv.appendChild($cartItemPriceTextRight)
   $cartItemPriceDiv.appendChild($numberOfItemsDiv)
   $cartItemPriceDiv.appendChild($itemCheckboxDiv)
 
   $cartItemRow.appendChild($cartItemPriceDiv)
   $panelBody.appendChild($cartItemRow)
-  $panelBody.appendChild($updateCartButtonRow)
-  $panelDiv.appendChild($panelHeader)
-  $panelDiv.appendChild($panelBody)
 
-  return $panelDiv
+  return $panelBody
+}
+
+function removeItem(event) {
+  for (var i = 0; i < cart.length; i++) {
+    console.log(cart)
+    console.log(event.target.dataset.id)
+    console.log(cart[i].id)
+    if (event.target.dataset.id === cart[i].id) {
+      cart.splice(cart[i], 1)
+    }
+  }
+}
+
+function updateCart(event) {
+  var $viewCart = document.getElementById('cart')
+  $viewCart.innerHTML = ''
+  viewCart()
+}
+// event.target.setAttribute('data-id', cart.id)
+
+function totalCost(cart) {
+  var itemCost = []
+  var total = 0
+  for (var i = 0; i < cart.length; i++) {
+    itemCost.push(cart[i].price)
+  }
+  for (var x = 0; x < itemCost.length; i++) {
+    return
+  }
+  console.log(total)
+  return total
 }
