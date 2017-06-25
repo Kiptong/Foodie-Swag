@@ -1,7 +1,7 @@
 var products = [
-  {id: 'tee', name: 'Tee', images: 'product-images/tee.jpg', description: ['100% Cotton', 'Made in US', 'Durable rib neckband', 'Made of 3 unique yarns'], price: 19.99, color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL'], qty: 0},
-  {id: 'hoodie', name: 'Hoodie', images: 'product-images/hoodie.jpg', description: ['100% Cotton', 'Made in US', 'Hooded with matching finished polyester draw cord', 'Kangaroo pocket'], price: 19.99, color: ['Black/White', 'White/Black'], size: ['S', 'M', 'L', 'XL'], qty: 0},
-  {id: 'hat', name: 'Hat', images: 'product-images/hat.jpg', description: ['Made in US', 'Poly-foam Front Two-toned Cap', 'Mesh Back Trucker Cap', 'Plastic Adjustable Snap Closure'], price: 19.99, color: ['Black/White'], size: ['One Size Fits All'], qty: 0},
+  {id: 'tee', name: 'Tee', images: 'product-images/tee.jpg', description: ['100% Cotton', 'Made in US', 'Durable rib neckband', 'Made of 3 unique yarns'], price: 8.99, color: ['Black/White'], size: ['S', 'M', 'L', 'XL'], qty: 0},
+  {id: 'hoodie', name: 'Hoodie', images: 'product-images/hoodie.jpg', description: ['100% Cotton', 'Made in US', 'Hooded with matching finished polyester draw cord', 'Kangaroo pocket'], price: 10.99, color: ['Black/White'], size: ['S', 'M', 'L', 'XL'], qty: 0},
+  {id: 'hat', name: 'Hat', images: 'product-images/hat.jpg', description: ['Made in US', 'Poly-foam Front Two-toned Cap', 'Mesh Back Trucker Cap', 'Plastic Adjustable Snap Closure'], price: 14.99, color: ['Black/White'], size: ['One Size Fits All'], qty: 0},
   {id: 'sticker', name: 'Sticker', images: 'product-images/sticker.jpg', description: ['Made in US', 'Decal is great for Walls, Doors, Cars, Windows, Desks, ETC', 'Sticker is Vinyl and can withstand outdoor weather', 'Strong Adhesive'], price: 19.99, color: ['N/A'], size: ['S', 'M', 'L'], qty: 0}
 ]
 
@@ -432,11 +432,8 @@ function cartItem($cartItem) {
 
 function removeItem(event) {
   for (var i = 0; i < cart.length; i++) {
-    console.log(cart)
-    console.log(event.target.dataset.id)
-    console.log(cart[i].id)
     if (event.target.dataset.id === cart[i].id) {
-      cart.splice(cart[i], 1)
+      cart.splice(i, 1)
     }
   }
 }
@@ -446,7 +443,6 @@ function updateCart(event) {
   $viewCart.innerHTML = ''
   viewCart()
 }
-// event.target.setAttribute('data-id', cart.id)
 
 function totalCost(cart) {
   var itemCost = []
@@ -454,8 +450,8 @@ function totalCost(cart) {
   for (var i = 0; i < cart.length; i++) {
     itemCost.push(cart[i].price)
   }
-  for (var x = 0; x < itemCost.length; i++) {
-    return
+  for (var x = 0; x < itemCost.length; x++) {
+    total = total + itemCost[x]
   }
   console.log(total)
   return total
